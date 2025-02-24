@@ -90,7 +90,7 @@ func CalculatePointsForTime(timeStr string) (int, error) {
 		return 0, fmt.Errorf("Time cannot be empty")
 	}
 
-	parseTime, err := time.Parse("14:04", timeStr)
+	parseTime, err := time.Parse("05:04", timeStr)
 	if err != nil {
 		return 0, fmt.Errorf("Error parsing time: %v", err)
 	}

@@ -40,6 +40,12 @@ func postReceipt(c *gin.Context) {
 
 	totalPoints := 0
 
+	// Check if receipt data is empty
+	if newRecpt.Retailer == "" && newRecpt.Total == "" && len(newRecpt.Items) == 0 && newRecpt.PurchaseDate == "" && newRecpt.PurchaseTime == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Empty receipt data"})
+		return
+	}
+
 	// Calculate retailer points
 	if points, err := helpers.CountAlphaNumeric(newRecpt.Retailer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
