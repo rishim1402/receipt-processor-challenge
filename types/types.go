@@ -5,7 +5,7 @@ type Item struct {
 	Price            string `json:"price"`
 }
 
-type Recpt struct {
+type Receipt struct {
 	Retailer     string `json:"retailer"`
 	PurchaseDate string `json:"purchaseDate"`
 	PurchaseTime string `json:"purchaseTime"`

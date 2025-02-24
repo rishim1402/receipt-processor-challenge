@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var recpts []types.Recpt
+var recpts []types.Receipt
 var pointMap = make(map[string]int)
 
 func getReceipt(c *gin.Context) {
@@ -23,7 +23,7 @@ func getReceipt(c *gin.Context) {
 }
 
 func postReceipt(c *gin.Context) {
-	var newRecpt types.Recpt
+	var newRecpt types.Receipt
 
 	if err := c.BindJSON(&newRecpt); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt data"})
