@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"receiptPointProcessor/processing"
 	"receiptPointProcessor/types"
@@ -25,7 +26,8 @@ func postReceipt(c *gin.Context) {
 	var newRecpt types.Receipt
 
 	if err := c.BindJSON(&newRecpt); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt data"})
+		// fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid receipt data: %v", err)})
 		return
 	}
 
