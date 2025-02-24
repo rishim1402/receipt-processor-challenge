@@ -1,4 +1,4 @@
-module takehome
+module receiptPointProcessor
 
 go 1.17
 

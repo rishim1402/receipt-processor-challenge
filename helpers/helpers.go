@@ -3,9 +3,9 @@ package helpers
 import (
 	"fmt"
 	"math"
+	"receiptPointProcessor/types"
 	"strconv"
 	"strings"
-	"takehome/types"
 	"time"
 	"unicode"
 )

@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"takehome/helpers"
-	"takehome/types"
+	"receiptPointProcessor/helpers"
+	"receiptPointProcessor/types"
 	"testing"
 )
 

@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"takehome/helpers"
-	"takehome/types"
+	"receiptPointProcessor/helpers"
+	"receiptPointProcessor/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -13,7 +13,7 @@ import (
 var recpts []types.Recpt
 var pointMap = make(map[string]int)
 
-func getRecpt(c *gin.Context) {
+func getReceipt(c *gin.Context) {
 	id := c.Param("id")
 	if point, ok := pointMap[id]; ok {
 		c.IndentedJSON(http.StatusOK, gin.H{"points": point})
@@ -93,7 +93,7 @@ func postReceipt(c *gin.Context) {
 func setupRouter() *gin.Engine {
 	fmt.Println("Setting up router")
 	router := gin.Default()
-	router.GET("/receipt/:id/points", getRecpt)
+	router.GET("/receipt/:id/points", getReceipt)
 	router.POST("/receipt/process", postReceipt)
 	return router
 }
