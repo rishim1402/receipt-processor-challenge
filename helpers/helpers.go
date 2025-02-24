@@ -29,6 +29,9 @@ func CalculatePointsForTotal(total string) (int, error) {
 	if err != nil {
 		return 0, fmt.Errorf("error converting total to float: %v", err)
 	}
+	if total_float < 0 {
+		return 0, fmt.Errorf("Total cannot be negative")
+	}
 	// Check if total is divisible by 0.25
 	if math.Mod(total_float, 0.25) == 0 {
 		totalPoints += 25
@@ -50,6 +53,13 @@ func CalculatePointsForItems(items []types.Item) (int, error) {
 	itemPoints += (5 * (itemLen / 2))
 
 	for _, item := range items {
+		priceFloat, err := strconv.ParseFloat(item.Price, 64)
+		if err != nil {
+			return 0, fmt.Errorf("Error converting price to float: %v", err)
+		}
+		if priceFloat < 0 {
+			return 0, fmt.Errorf("Price cannot be negative")
+		}
 		trimmedItem := strings.TrimSpace(item.ShortDescription)
 		trimmedItemLen := len(trimmedItem)
 		if trimmedItemLen == 0 {
@@ -58,10 +68,6 @@ func CalculatePointsForItems(items []types.Item) (int, error) {
 		if trimmedItemLen%3 == 0 {
 			if item.Price == "" {
 				return 0, fmt.Errorf("Price cannot be empty")
-			}
-			priceFloat, err := strconv.ParseFloat(item.Price, 64)
-			if err != nil {
-				return 0, fmt.Errorf("Error converting price to float: %v", err)
 			}
 			itemPoints += int(math.Ceil(priceFloat * 0.2))
 		}

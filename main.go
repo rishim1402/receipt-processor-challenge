@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var recpts []types.Receipt
+var receipts []types.Receipt
 var pointMap = make(map[string]int)
 
 func getReceipt(c *gin.Context) {
@@ -23,9 +23,9 @@ func getReceipt(c *gin.Context) {
 }
 
 func postReceipt(c *gin.Context) {
-	var newRecpt types.Receipt
+	var newReceipt types.Receipt
 
-	if err := c.BindJSON(&newRecpt); err != nil {
+	if err := c.BindJSON(&newReceipt); err != nil {
 		// fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid receipt data: %v", err)})
 		return
@@ -39,7 +39,7 @@ func postReceipt(c *gin.Context) {
 		generatedID = uuid.New().String()
 	}
 
-	totalPoints, err := processing.ProcessReceipt(newRecpt)
+	totalPoints, err := processing.ProcessReceipt(newReceipt)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
