@@ -3,6 +3,7 @@ package helpers
 import (
 	"fmt"
 	"math"
+	"receiptPointProcessor/constants"
 	"receiptPointProcessor/types"
 	"strconv"
 	"strings"
@@ -10,16 +11,20 @@ import (
 	"unicode"
 )
 
+// CountAlphaNumeric counts and returns the number of alphanumeric characters in a given string.
+// It takes a retailer name as input.
 func CountAlphaNumeric(retailer_name string) (int, error) {
 	count := 0
 	for _, r := range retailer_name {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
-			count++
+			count += constants.Retailer_name_point
 		}
 	}
 	return count, nil
 }
 
+// CalculatePointsForTotal calculates points based on the total value string.
+// It returns points if the total is divisible by 0.25 and if it is a whole number.
 func CalculatePointsForTotal(total string) (int, error) {
 	totalPoints := 0
 	if total == "" {
@@ -32,17 +37,17 @@ func CalculatePointsForTotal(total string) (int, error) {
 	if total_float < 0 {
 		return 0, fmt.Errorf("Total cannot be negative")
 	}
-	// Check if total is divisible by 0.25
 	if math.Mod(total_float, 0.25) == 0 {
-		totalPoints += 25
+		totalPoints += constants.Total_divisible_by_0_25
 	}
-	// Check if total is a whole number
 	if (total_float - math.Floor(total_float)) == 0.0 {
-		totalPoints += 50
+		totalPoints += constants.Total_whole_number
 	}
 	return totalPoints, nil
 }
 
+// CalculatePointsForItems calculates points for a list of items.
+// Points are assigned based on the item price and description length conditions.
 func CalculatePointsForItems(items []types.Item) (int, error) {
 	if len(items) == 0 {
 		return 0, fmt.Errorf("Items List cannot be empty")
@@ -50,7 +55,7 @@ func CalculatePointsForItems(items []types.Item) (int, error) {
 
 	itemPoints := 0
 	itemLen := len(items)
-	itemPoints += (5 * (itemLen / 2))
+	itemPoints += (constants.Item_length_point * (itemLen / 2))
 
 	for _, item := range items {
 		priceFloat, err := strconv.ParseFloat(item.Price, 64)
@@ -65,16 +70,18 @@ func CalculatePointsForItems(items []types.Item) (int, error) {
 		if trimmedItemLen == 0 {
 			return 0, fmt.Errorf("Item Description cannot be empty")
 		}
-		if trimmedItemLen%3 == 0 {
+		if trimmedItemLen%constants.Item_description_lenght_multiple == 0 {
 			if item.Price == "" {
 				return 0, fmt.Errorf("Price cannot be empty")
 			}
-			itemPoints += int(math.Ceil(priceFloat * 0.2))
+			itemPoints += int(math.Ceil(priceFloat * constants.Item_description_lenght_based_points))
 		}
 	}
 	return itemPoints, nil
 }
 
+// CalculatePointsForDate calculates points based on the purchase date.
+// Returns 6 points if the day of the month is odd.
 func CalculatePointsForDate(date string) (int, error) {
 	if date == "" {
 		return 0, fmt.Errorf("Date cannot be empty")
@@ -86,11 +93,13 @@ func CalculatePointsForDate(date string) (int, error) {
 	}
 
 	if parsedDate.Day()%2 != 0 {
-		return 6, nil
+		return constants.Odd_date_point, nil
 	}
-	return 0, nil
+	return constants.Even_date_point, nil
 }
 
+// CalculatePointsForTime calculates points based on the purchase time.
+// It awards 10 points if the time is between 14:00 and 16:00.
 func CalculatePointsForTime(timeStr string) (int, error) {
 	if timeStr == "" {
 		return 0, fmt.Errorf("Time cannot be empty")
@@ -102,8 +111,8 @@ func CalculatePointsForTime(timeStr string) (int, error) {
 	}
 
 	purchaseHour := parseTime.Hour()
-	if purchaseHour >= 14 && purchaseHour < 16 {
-		return 10, nil
+	if purchaseHour >= constants.Start_time_deadline && purchaseHour < constants.End_time_deadline {
+		return constants.Peak_hour_point, nil
 	}
 	return 0, nil
 }
