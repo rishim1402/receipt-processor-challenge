@@ -16,18 +16,17 @@ var pointMap = make(map[string]int)
 func getReceipt(c *gin.Context) {
 	id := c.Param("id")
 	if point, ok := pointMap[id]; ok {
-		c.IndentedJSON(http.StatusOK, gin.H{"points": point})
+		c.IndentedJSON(http.StatusOK, gin.H{"Points": point})
 		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "record not found"})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "No receipt found for that ID."})
 }
 
 func postReceipt(c *gin.Context) {
 	var newReceipt types.Receipt
 
 	if err := c.BindJSON(&newReceipt); err != nil {
-		// fmt.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid receipt data: %v", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("The receipt is invalid.")})
 		return
 	}
 
@@ -51,8 +50,8 @@ func postReceipt(c *gin.Context) {
 func setupRouter() *gin.Engine {
 	// fmt.Println("Setting up router")
 	router := gin.Default()
-	router.GET("/receipt/:id/points", getReceipt)
-	router.POST("/receipt/process", postReceipt)
+	router.GET("/receipts/:id/points", getReceipt)
+	router.POST("/receipts/process", postReceipt)
 	return router
 }
 
