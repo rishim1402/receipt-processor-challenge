@@ -18,7 +18,7 @@ This service processes receipts and awards points based on specific rules. It pr
 ## API Endpoints
 
 ### 1. Process Receipt
-- **Endpoint**: POST `/receipt/process`
+- **Endpoint**: POST `/receipts/process`
 - **Content Type**: application/json
 - **Request Body**:
 ```json
@@ -43,7 +43,7 @@ This service processes receipts and awards points based on specific rules. It pr
 ```
 
 ### 2. Get Points
-- **Endpoint**: GET `/receipt/:id/points`
+- **Endpoint**: GET `/receipts/:id/points`
 - **Success Response**:
 ```json
 {
@@ -60,18 +60,6 @@ This service processes receipts and awards points based on specific rules. It pr
 5. If the trimmed length of the item description is a multiple of 3, multiply the price by 0.2 and round up to the nearest integer. The result is the number of points earned.
 6. 6 points if the day in the purchase date is odd
 7. 10 points if the time of purchase is after 2:00pm and before 4:00pm
-
-## Project Structure
-
-```
-fetch_receipt_processor_challenge/
-├── main.go           # Main application entry point and route handlers
-├── main_test.go      # Test cases for the main application
-├── types/
-│   └── types.go      # Data structures and types
-└── helpers/
-    └── helpers.go    # Helper functions for points calculation
-```
 
 ## Running the Application
 
