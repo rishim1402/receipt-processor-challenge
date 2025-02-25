@@ -40,7 +40,7 @@ func postReceipt(c *gin.Context) {
 
 	totalPoints, err := processing.ProcessReceipt(newReceipt)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("The receipt is invalid.")})
 		return
 	}
 	pointMap[generatedID] = totalPoints
