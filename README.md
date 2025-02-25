@@ -94,7 +94,7 @@ The server will start on `localhost:8080`
 Process Receipt:
 ```bash
 curl -X POST \
-  http://localhost:8080/receipt/process \
+  http://localhost:8080/receipts/process \
   -H 'Content-Type: application/json' \
   -d '{
     "retailer": "Target",
@@ -112,7 +112,7 @@ curl -X POST \
 
 Get Points:
 ```bash
-curl -X GET http://localhost:8080/receipt/{id}/points
+curl -X GET http://localhost:8080/receipts/{id}/points
 ```
 
 3. Replace `{id}` in the Get Points request with the ID received from the Process Receipt response
